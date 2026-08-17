@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   codexion.h                                         :+:      :+:    :+:   */
+/*   validate_arguments.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/18 00:24:59 by wbaran           ###   ########.fr       */
+/*   Created: 2026/08/18 00:02:51 by wbaran            #+#    #+#             */
+/*   Updated: 2026/08/18 00:32:00 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CODEXION_H
-# define CODEXION_H
+#include <string.h>
+#include "codexion.h"
 
-int	validate_arguments(char **argv);
+int	validate_arguments(char **argv)
+{
+	int	i;
 
-int	is_valid_uint(char *str);
-
-#endif
+	i = 1;
+	while (i < 8)
+		if (!is_valid_uint(argv[i++]))
+			return (0);
+	if (strcmp(argv[8], "fifo") != 0 && strcmp(argv[8], "edf") != 0)
+		return (0);
+	return (1);
+}

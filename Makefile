@@ -19,13 +19,15 @@ MAKEFLAGS	+=	--no-print-directory
 
 # Compiler config
 CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra
+CFLAGS		:=	-Wall -Werror -Wextra -I.
 
 # Source files
 HEADERS 	:=	codexion.h
 
 SRCS_PATH	:=	./src
-SRCS		:=	$(SRCS_PATH)/codexion.c
+SRCS		:=	$(SRCS_PATH)/codexion.c \
+				$(SRCS_PATH)/validate_arguments.c \
+				$(SRCS_PATH)/is_valid_uint.c
 
 # Object files
 OBJS		:=	$(SRCS:.c=.o)
