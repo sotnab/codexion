@@ -25,7 +25,8 @@ CFLAGS		:=	-Wall -Werror -Wextra -I. -pthread
 HEADERS 	:=	codexion.h
 
 SRCS_PATH	:=	./src
-SRCS		:=	$(SRCS_PATH)/codexion.c \
+SRCS		:=	$(SRCS_PATH)/main.c \
+				$(SRCS_PATH)/codexion.c \
 				$(SRCS_PATH)/validate_arguments.c \
 				$(SRCS_PATH)/is_valid_uint.c
 
