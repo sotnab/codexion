@@ -19,7 +19,7 @@ MAKEFLAGS	+=	--no-print-directory
 
 # Compiler config
 CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra -I.
+CFLAGS		:=	-Wall -Werror -Wextra -I. -pthread
 
 # Source files
 HEADERS 	:=	codexion.h

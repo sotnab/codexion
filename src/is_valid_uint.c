@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/18 00:05:34 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/18 00:23:48 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/18 10:35:46 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,21 @@ static int	ft_isspace(char c)
 		|| c == '\r' || c == '\t' || c == '\v');
 }
 
-static int	in_uint_range(char *str)
+static int	in_uint_range(char **str)
 {
 	long	result;
 	int		current;
 
 	result = 0;
-	if (*str == '+')
-		str++;
-	if (!ft_isdigit(*str))
+	if (!ft_isdigit(**str))
 		return (0);
-	while (*str && ft_isdigit(*str))
+	while (**str && ft_isdigit(**str))
 	{
-		current = *str++ - '0';
+		current = **str - '0';
 		if (result != 0 && ((UINT_MAX - current) / result) < 10)
 			return (0);
 		result = (result * 10) + current;
+		(*str)++;
 	}
 	return (1);
 }
@@ -49,12 +48,10 @@ int	is_valid_uint(char *str)
 		return (0);
 	while (ft_isspace(*str))
 		str++;
-	if (!in_uint_range(str))
-		return (0);
 	if (*str == '+')
 		str++;
-	while (ft_isdigit(*str))
-		str++;
+	if (!in_uint_range(&str))
+		return (0);
 	while (ft_isspace(*str))
 		str++;
 	if (*str != 0)
