@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:17:53 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/19 17:44:32 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/19 18:00:43 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static bool	init_coders(t_codexion *data)
 	while (i < data->args->coders_number)
 	{
 		data->coders[i].number = i + 1;
+		data->coders[i].last_compile = 0;
 		if (i + 1 < data->args->coders_number)
 		{
 			data->coders[i].first_dongle = data->dongles + i;
