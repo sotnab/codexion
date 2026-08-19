@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/18 20:31:48 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/18 21:00:46 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/19 14:30:10 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	main(int argc, char **argv)
 {
-	t_codexion	data;
+	t_args	data;
 
 	if (argc != 9)
 		return (fprintf(stderr, "Invalid number of arguments.\n"), 1);

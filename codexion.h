@@ -6,13 +6,15 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/18 23:37:47 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/19 15:25:37 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CODEXION_H
 # define CODEXION_H
 
+# include <stdint.h>
+# include <stdbool.h>
 # include <pthread.h>
 
 typedef enum e_scheduler
@@ -21,32 +23,44 @@ typedef enum e_scheduler
 	EDF
 }	t_scheduler;
 
-typedef struct s_codexion
+typedef struct s_args
 {
-	unsigned int	coders_number;
-	unsigned int	burnout_time;
-	unsigned int	compile_time;
-	unsigned int	debug_time;
-	unsigned int	refactor_time;
-	unsigned int	compiles_required;
-	unsigned int	dongle_cooldown;
-	t_scheduler		scheduler;
+	uint32_t	coders_number;
+	uint32_t	burnout_time;
+	uint32_t	compile_time;
+	uint32_t	debug_time;
+	uint32_t	refactor_time;
+	uint32_t	compiles_required;
+	uint32_t	dongle_cooldown;
+	t_scheduler	scheduler;
 
-}	t_codexion;
+}	t_args;
 
 typedef struct s_coder
 {
 	pthread_t		thread;
-	unsigned int	number;
-	t_codexion		*codexion;
+	uint32_t		number;
+	uint32_t		compiles;
+	t_args			*args;
 	pthread_mutex_t	*first_dongle;
 	pthread_mutex_t	*second_dongle;
 }	t_coder;
 
-void	codexion(t_codexion *data);
+typedef struct s_codexion
+{
+	t_args			*args;
+	pthread_mutex_t	*dongles;
+	t_coder			*coders;
+}	t_codexion;
 
-int		parse_arguments(t_codexion *data, char **argv);
+void	codexion(t_args *args);
 
-int		is_valid_uint(char *str);
+void	*coder_routine(void *arg);
+
+bool	init_codexion(t_codexion *data);
+
+bool	parse_arguments(t_args *args, char **argv);
+
+bool	is_valid_uint(char *str);
 
 #endif

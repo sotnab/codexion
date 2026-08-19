@@ -6,55 +6,56 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/18 00:05:34 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/18 10:35:46 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/19 15:32:31 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <limits.h>
+#include <stdint.h>
+#include <stdbool.h>
 
-static int	ft_isdigit(char c)
+static bool	ft_isdigit(char c)
 {
 	return (c >= '0' && c <= '9');
 }
 
-static int	ft_isspace(char c)
+static bool	ft_isspace(char c)
 {
 	return (c == ' ' || c == '\f' || c == '\n'
 		|| c == '\r' || c == '\t' || c == '\v');
 }
 
-static int	in_uint_range(char **str)
+static bool	in_uint_range(char **str)
 {
-	long	result;
-	int		current;
+	uint32_t	result;
+	uint8_t		current;
 
 	result = 0;
 	if (!ft_isdigit(**str))
-		return (0);
+		return (false);
 	while (**str && ft_isdigit(**str))
 	{
 		current = **str - '0';
-		if (result != 0 && ((UINT_MAX - current) / result) < 10)
-			return (0);
+		if (result != 0 && ((UINT32_MAX - current) / result) < 10)
+			return (false);
 		result = (result * 10) + current;
 		(*str)++;
 	}
-	return (1);
+	return (true);
 }
 
-int	is_valid_uint(char *str)
+bool	is_valid_uint(char *str)
 {
 	if (!*str)
-		return (0);
+		return (false);
 	while (ft_isspace(*str))
 		str++;
 	if (*str == '+')
 		str++;
 	if (!in_uint_range(&str))
-		return (0);
+		return (false);
 	while (ft_isspace(*str))
 		str++;
 	if (*str != 0)
-		return (0);
-	return (1);
+		return (false);
+	return (true);
 }

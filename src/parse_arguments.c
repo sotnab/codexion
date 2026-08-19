@@ -1,46 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate_arguments.c                               :+:      :+:    :+:   */
+/*   parse_arguments.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/18 00:02:51 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/18 21:21:35 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/19 15:32:11 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
+#include <stdbool.h>
 #include "codexion.h"
 
-int	validate_arguments(char **argv)
+bool	validate_arguments(char **argv)
 {
-	int	i;
+	uint32_t	i;
 
 	i = 1;
 	while (i < 8)
 		if (!is_valid_uint(argv[i++]))
-			return (0);
+			return (false);
 	if (strcmp(argv[8], "fifo") != 0 && strcmp(argv[8], "edf") != 0)
-		return (0);
-	return (1);
+		return (false);
+	return (true);
 }
 
-int	parse_arguments(t_codexion *data, char **argv)
+bool	parse_arguments(t_args *args, char **argv)
 {
 	if (!validate_arguments(argv))
-		return (0);
-	data->coders_number = atoi(argv[1]);
-	data->burnout_time = atoi(argv[2]);
-	data->compile_time = atoi(argv[3]);
-	data->debug_time = atoi(argv[4]);
-	data->refactor_time = atoi(argv[5]);
-	data->compiles_required = atoi(argv[6]);
-	data->dongle_cooldown = atoi(argv[7]);
+		return (false);
+	args->coders_number = atoi(argv[1]);
+	args->burnout_time = atoi(argv[2]);
+	args->compile_time = atoi(argv[3]);
+	args->debug_time = atoi(argv[4]);
+	args->refactor_time = atoi(argv[5]);
+	args->compiles_required = atoi(argv[6]);
+	args->dongle_cooldown = atoi(argv[7]);
 	if (strcmp(argv[8], "fifo") == 0)
-		data->scheduler = FIFO;
+		args->scheduler = FIFO;
 	else
-		data->scheduler = EDF;
-	return (1);
+		args->scheduler = EDF;
+	return (true);
 }
