@@ -28,6 +28,8 @@ SRCS_PATH	:=	./src
 SRCS		:=	$(SRCS_PATH)/main.c \
 				$(SRCS_PATH)/codexion.c \
 				$(SRCS_PATH)/coder_routine.c \
+				$(SRCS_PATH)/monitor_routine.c \
+				$(SRCS_PATH)/get_cpu_ms.c \
 				$(SRCS_PATH)/init_codexion.c \
 				$(SRCS_PATH)/parse_arguments.c \
 				$(SRCS_PATH)/is_valid_uint.c

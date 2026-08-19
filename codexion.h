@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/19 15:25:37 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/19 17:44:38 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,23 @@
 # include <stdint.h>
 # include <stdbool.h>
 # include <pthread.h>
+# include <time.h>
+
+typedef struct timespec	t_timespec;
 
 typedef enum e_scheduler
 {
 	FIFO,
 	EDF
 }	t_scheduler;
+
+typedef enum e_message
+{
+	DONGLE,
+	COMPILING,
+	DEBUGGING,
+	REFACTORING
+}	t_message;
 
 typedef struct s_args
 {
@@ -41,7 +52,6 @@ typedef struct s_coder
 	pthread_t		thread;
 	uint32_t		number;
 	uint32_t		compiles;
-	t_args			*args;
 	pthread_mutex_t	*first_dongle;
 	pthread_mutex_t	*second_dongle;
 }	t_coder;
@@ -49,18 +59,30 @@ typedef struct s_coder
 typedef struct s_codexion
 {
 	t_args			*args;
-	pthread_mutex_t	*dongles;
 	t_coder			*coders;
+	pthread_mutex_t	*dongles;
+	pthread_mutex_t	print_lock;
+	pthread_t		monitor;
 }	t_codexion;
 
-void	codexion(t_args *args);
+typedef struct s_thread_arg
+{
+	t_codexion	*data;
+	t_coder		*coder;
+}	t_thread_arg;
 
-void	*coder_routine(void *arg);
+void		codexion(t_args *args);
 
-bool	init_codexion(t_codexion *data);
+void		*coder_routine(void *arg);
 
-bool	parse_arguments(t_args *args, char **argv);
+void		*monitor_routine(void *arg);
 
-bool	is_valid_uint(char *str);
+bool		init_codexion(t_codexion *data);
+
+bool		parse_arguments(t_args *args, char **argv);
+
+bool		is_valid_uint(char *str);
+
+uint32_t	get_cpu_ms(void);
 
 #endif

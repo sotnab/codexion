@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:34 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/19 15:14:18 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/19 17:45:07 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,40 @@
 #include <pthread.h>
 #include "codexion.h"
 
-static void	run_coders(t_codexion *data)
+static t_thread_arg	*create_thread_arg(t_codexion *data, t_coder *coder)
+{
+	t_thread_arg	*thread_arg;
+
+	thread_arg = malloc(sizeof(t_thread_arg));
+	if (!thread_arg)
+		return (NULL);
+	thread_arg->data = data;
+	thread_arg->coder = coder;
+	return (thread_arg);
+}
+
+static void	run_threads(t_codexion *data)
 {
 	uint32_t	i;
 
+	pthread_create(&data->monitor, NULL, monitor_routine, data);
 	i = 0;
 	while (i < data->args->coders_number)
 	{
 		pthread_create(&data->coders[i].thread, NULL,
-			coder_routine, data->coders + i);
+			coder_routine, create_thread_arg(data, data->coders + i));
 		i++;
 	}
 }
 
-static void	join_coders(t_codexion *data)
+static void	join_threads(t_codexion *data)
 {
 	uint32_t	i;
 
 	i = 0;
 	while (i < data->args->coders_number)
 		pthread_join(data->coders[i++].thread, NULL);
+	pthread_join(data->monitor, NULL);
 }
 
 void	codexion(t_args *args)
@@ -45,6 +59,7 @@ void	codexion(t_args *args)
 	data.args = args;
 	if (!init_codexion(&data))
 		return ((void)fprintf(stderr, "Malloc failed.\n"));
-	run_coders(&data);
-	join_coders(&data);
+	(void)get_cpu_ms();
+	run_threads(&data);
+	join_threads(&data);
 }

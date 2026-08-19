@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:17:53 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/19 15:31:36 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/19 17:44:32 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <pthread.h>
 #include "codexion.h"
 
+// TODO init fail handling
 static bool	init_dongles(t_codexion *data)
 {
 	uint32_t	i;
@@ -26,6 +27,7 @@ static bool	init_dongles(t_codexion *data)
 	return (true);
 }
 
+// TODO init fail handling
 static bool	init_coders(t_codexion *data)
 {
 	uint32_t	i;
@@ -33,7 +35,6 @@ static bool	init_coders(t_codexion *data)
 	i = 0;
 	while (i < data->args->coders_number)
 	{
-		data->coders[i].args = data->args;
 		data->coders[i].number = i + 1;
 		if (i + 1 < data->args->coders_number)
 		{
@@ -50,6 +51,13 @@ static bool	init_coders(t_codexion *data)
 	return (true);
 }
 
+// TODO init fail handling
+static bool	init_utils(t_codexion *data)
+{
+	pthread_mutex_init(&data->print_lock, NULL);
+	return (true);
+}
+
 bool	init_codexion(t_codexion *data)
 {
 	data->dongles = malloc(sizeof(pthread_mutex_t) * data->args->coders_number);
@@ -60,5 +68,6 @@ bool	init_codexion(t_codexion *data)
 	if (!data->coders)
 		return (free(data->dongles), false);
 	init_coders(data);
+	init_utils(data);
 	return (true);
 }

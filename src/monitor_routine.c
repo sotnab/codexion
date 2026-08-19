@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   monitor_routine.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/18 20:31:48 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/19 16:56:12 by wbaran           ###   ########.fr       */
+/*   Created: 2026/08/19 15:53:23 by wbaran            #+#    #+#             */
+/*   Updated: 2026/08/19 16:30:26 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
+#include <stddef.h>
 #include "codexion.h"
 
-int	main(int argc, char **argv)
+void	*monitor_routine(void *arg)
 {
-	t_args	args;
+	t_codexion	*data;
 
-	if (argc != 9)
-		return (fprintf(stderr, "Invalid number of arguments.\n"), 1);
-	if (parse_arguments(&args, argv))
-		codexion(&args);
-	else
-		return (printf("Invalid arguments.\n"), 1);
-	return (0);
+	data = (t_codexion *)arg;
+	(void)data;
+	return (NULL);
 }
