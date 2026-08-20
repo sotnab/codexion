@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 15:53:23 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/19 22:49:47 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/20 11:52:53 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ void	*monitor_routine(void *arg)
 			coder = data->coders + i;
 			if (time - coder->last_compile > data->args->burnout_time)
 			{
+				pthread_mutex_lock(&data->burnout_lock);
 				data->burned_out = true;
+				pthread_mutex_unlock(&data->burnout_lock);
 				print_burnout_message(data, coder->number);
 				return (NULL);
 			}

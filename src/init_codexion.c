@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:17:53 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/19 18:00:43 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/20 11:51:21 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static bool	init_coders(t_codexion *data)
 static bool	init_utils(t_codexion *data)
 {
 	pthread_mutex_init(&data->print_lock, NULL);
+	pthread_mutex_init(&data->burnout_lock, NULL);
 	return (true);
 }
 

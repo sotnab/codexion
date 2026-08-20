@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/19 22:42:54 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/20 11:50:45 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,10 @@ typedef struct s_codexion
 	t_coder			*coders;
 	pthread_mutex_t	*dongles;
 	pthread_mutex_t	print_lock;
+	pthread_mutex_t	burnout_lock;
 	pthread_t		monitor;
 	bool			burned_out;
 }	t_codexion;
-
-typedef struct s_thread_arg
-{
-	t_codexion	*data;
-	t_coder		*coder;
-}	t_thread_arg;
 
 void		codexion(t_args *args);
 
