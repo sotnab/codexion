@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:17:53 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/20 11:51:21 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/20 13:53:54 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static bool	init_coders(t_codexion *data)
 	while (i < data->args->coders_number)
 	{
 		data->coders[i].number = i + 1;
+		data->coders[i].compiles = 0;
 		data->coders[i].last_compile = 0;
 		if (i + 1 < data->args->coders_number)
 		{
@@ -56,7 +57,7 @@ static bool	init_coders(t_codexion *data)
 static bool	init_utils(t_codexion *data)
 {
 	pthread_mutex_init(&data->print_lock, NULL);
-	pthread_mutex_init(&data->burnout_lock, NULL);
+	pthread_mutex_init(&data->finish_lock, NULL);
 	return (true);
 }
 

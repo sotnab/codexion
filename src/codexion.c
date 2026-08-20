@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:34 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/20 12:31:35 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/20 14:01:27 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	codexion(t_args *args)
 	t_codexion		data;
 
 	data.args = args;
-	data.burned_out = 0;
+	data.finish = 0;
 	if (!init_codexion(&data))
 		return ((void)fprintf(stderr, "Malloc failed.\n"));
 	get_cpu_ms();

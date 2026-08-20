@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:16:07 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/20 12:42:47 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/20 13:58:58 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	print_coder_message(t_codexion *data, int number, t_message message)
 {
 	uint32_t	timestamp;
 
-	if (data->burned_out)
+	if (data->finish)
 		return ;
 	timestamp = get_cpu_ms();
 	pthread_mutex_lock(&data->print_lock);
@@ -42,7 +42,7 @@ void	coder_sleep(t_codexion *data, uint32_t duration)
 	uint32_t	finish;
 
 	finish = get_cpu_ms() + duration;
-	while (!data->burned_out && get_cpu_ms() < finish)
+	while (!data->finish && get_cpu_ms() < finish)
 		usleep(1000);
 }
 
@@ -53,7 +53,7 @@ void	*coder_routine(void *arg)
 
 	data = (t_codexion *)((void **)arg)[0];
 	coder = (t_coder *)((void **)arg)[1];
-	while (!data->burned_out)
+	while (!data->finish)
 	{
 		pthread_mutex_lock(coder->first_dongle);
 		print_coder_message(data, coder->number, DONGLE);
@@ -64,6 +64,7 @@ void	*coder_routine(void *arg)
 		coder_sleep(data, data->args->compile_time);
 		pthread_mutex_unlock(coder->second_dongle);
 		pthread_mutex_unlock(coder->first_dongle);
+		coder->compiles++;
 		print_coder_message(data, coder->number, DEBUGGING);
 		coder_sleep(data, data->args->debug_time);
 		print_coder_message(data, coder->number, REFACTORING);
