@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 15:53:23 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/20 11:52:53 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/20 12:45:14 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,14 @@ static void	print_burnout_message(t_codexion *data, int number)
 	pthread_mutex_lock(&data->print_lock);
 	printf("%d burned out\n", number);
 	pthread_mutex_unlock(&data->print_lock);
+}
+
+static void	burnout(t_codexion *data, int number)
+{
+	pthread_mutex_lock(&data->burnout_lock);
+	data->burned_out = true;
+	pthread_mutex_unlock(&data->burnout_lock);
+	print_burnout_message(data, number);
 }
 
 void	*monitor_routine(void *arg)
@@ -40,13 +48,7 @@ void	*monitor_routine(void *arg)
 		{
 			coder = data->coders + i;
 			if (time - coder->last_compile > data->args->burnout_time)
-			{
-				pthread_mutex_lock(&data->burnout_lock);
-				data->burned_out = true;
-				pthread_mutex_unlock(&data->burnout_lock);
-				print_burnout_message(data, coder->number);
-				return (NULL);
-			}
+				return (burnout(data, coder->number), NULL);
 			i++;
 		}
 		usleep(5000);

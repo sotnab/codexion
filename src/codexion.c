@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:34 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/20 11:28:39 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/20 12:31:35 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,5 @@ void	codexion(t_args *args)
 	get_cpu_ms();
 	run_threads(&data);
 	join_threads(&data);
+	cleanup_codexion(&data);
 }

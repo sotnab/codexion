@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/20 11:50:45 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/20 12:31:03 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void		codexion(t_args *args);
 void		*coder_routine(void *arg);
 
 void		*monitor_routine(void *arg);
+
+void		cleanup_codexion(t_codexion *data);
 
 bool		init_codexion(t_codexion *data);
 
