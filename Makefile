@@ -19,7 +19,7 @@ MAKEFLAGS	+=	--no-print-directory
 
 # Compiler config
 CC			:=	cc
-CFLAGS		:=	-Wall -Werror -Wextra -I. -pthread
+CFLAGS		:=	-Wall -Werror -Wextra -I. -pthread -g
 
 # Source files
 HEADERS 	:=	codexion.h
@@ -33,7 +33,8 @@ SRCS		:=	$(SRCS_PATH)/main.c \
 				$(SRCS_PATH)/get_cpu_ms.c \
 				$(SRCS_PATH)/init_codexion.c \
 				$(SRCS_PATH)/parse_arguments.c \
-				$(SRCS_PATH)/is_valid_uint.c
+				$(SRCS_PATH)/is_valid_uint.c \
+				$(SRCS_PATH)/queue.c
 
 # Object files
 OBJS		:=	$(SRCS:.c=.o)

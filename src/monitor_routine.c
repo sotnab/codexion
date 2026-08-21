@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 15:53:23 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/20 14:43:33 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/21 17:52:56 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	set_finish(t_codexion *data)
 	pthread_mutex_lock(&data->finish_lock);
 	data->finish = true;
 	pthread_mutex_unlock(&data->finish_lock);
+	pthread_cond_broadcast(&data->queue.cond);
 }
 
 static void	burnout(t_codexion *data, int number)

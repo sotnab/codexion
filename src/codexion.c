@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:34 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/20 14:01:27 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/21 17:58:42 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ static void	join_threads(t_codexion *data)
 {
 	uint32_t	i;
 
+	pthread_join(data->monitor, NULL);
 	i = 0;
 	while (i < data->args->coders_number)
 		pthread_join(data->coders[i++].thread, NULL);
-	pthread_join(data->monitor, NULL);
 }
 
 // get_cpu_ms() initializes static start time
