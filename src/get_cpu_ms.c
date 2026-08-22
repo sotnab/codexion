@@ -24,10 +24,10 @@ uint32_t	get_cpu_ms(void)
 
 	if (start.tv_sec == -1)
 	{
-		clock_gettime(CLOCK_REALTIME, &start);
+		clock_gettime(CLOCK_MONOTONIC, &start);
 		return (0);
 	}
-	clock_gettime(CLOCK_REALTIME, &time);
+	clock_gettime(CLOCK_MONOTONIC, &time);
 	time_delta = (time.tv_sec - start.tv_sec) * 1000;
 	time_delta += (time.tv_nsec - start.tv_nsec) / 1e6;
 	return (time_delta);

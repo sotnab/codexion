@@ -53,6 +53,34 @@ void	queue_add_request(t_codexion *data, t_request *request)
 		queue_edf_heapify(data);
 }
 
+static void	queue_edf_heapify_down(t_codexion *data)
+{
+	uint32_t	index;
+	uint32_t	left;
+	uint32_t	right;
+	uint32_t	smallest;
+	t_request	**queue;
+
+	queue = data->queue.queue;
+	index = 0;
+	while (1)
+	{
+		left = 2 * index + 1;
+		right = 2 * index + 2;
+		smallest = index;
+		if (left < data->queue.size
+			&& queue[left]->deadline < queue[smallest]->deadline)
+			smallest = left;
+		if (right < data->queue.size
+			&& queue[right]->deadline < queue[smallest]->deadline)
+			smallest = right;
+		if (smallest == index)
+			break ;
+		request_swap(queue + index, queue + smallest);
+		index = smallest;
+	}
+}
+
 void	queue_pop_request(t_codexion *data)
 {
 	uint32_t	i;
@@ -61,11 +89,25 @@ void	queue_pop_request(t_codexion *data)
 		return ;
 	free(data->queue.queue[0]);
 	data->queue.size--;
-	i = 0;
-	while (i < data->queue.size)
+	if (data->queue.size == 0)
 	{
-		data->queue.queue[i] = data->queue.queue[i + 1];
-		i++;
+		data->queue.queue[0] = NULL;
+		return ;
 	}
-	data->queue.queue[i] = NULL;
+	if (data->queue.scheduler == EDF)
+	{
+		data->queue.queue[0] = data->queue.queue[data->queue.size];
+		data->queue.queue[data->queue.size] = NULL;
+		queue_edf_heapify_down(data);
+	}
+	else
+	{
+		i = 0;
+		while (i < data->queue.size)
+		{
+			data->queue.queue[i] = data->queue.queue[i + 1];
+			i++;
+		}
+		data->queue.queue[i] = NULL;
+	}
 }
