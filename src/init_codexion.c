@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:17:53 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/22 13:59:57 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/22 19:34:03 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,13 @@
 #include <pthread.h>
 #include "codexion.h"
 
-static bool	init_dongles(t_codexion *data)
+static void	init_dongles(t_codexion *data)
 {
 	uint32_t	i;
 
 	i = 0;
 	while (i < data->args->coders_number)
 		pthread_mutex_init(data->dongles + (i++), NULL);
-	return (true);
 }
 
 static void	init_coders(t_codexion *data)
@@ -66,12 +65,11 @@ static bool	init_queue(t_codexion *data)
 	return (true);
 }
 
-static bool	init_mutexes(t_codexion *data)
+static void	init_mutexes(t_codexion *data)
 {
 	pthread_mutex_init(&data->print_lock, NULL);
 	pthread_mutex_init(&data->finish_lock, NULL);
 	pthread_mutex_init(&data->queue_lock, NULL);
-	return (true);
 }
 
 bool	init_codexion(t_codexion *data)
