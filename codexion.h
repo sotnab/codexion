@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/22 14:43:25 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/22 20:12:50 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,18 @@ typedef struct s_queue
 	pthread_cond_t	cond;
 }	t_queue;
 
+typedef struct s_dongle
+{
+	pthread_mutex_t	mutex;
+	uint32_t		available_at;
+}	t_dongle;
+
 typedef struct s_codexion
 {
 	t_args			*args;
 	t_coder			*coders;
 	t_queue			queue;
-	pthread_mutex_t	*dongles;
+	t_dongle		*dongles;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	finish_lock;
 	pthread_mutex_t	queue_lock;

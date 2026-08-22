@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/22 14:40:22 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/22 14:44:39 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/22 20:31:18 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,5 @@ void	dongle_request(t_codexion *data, t_coder *coder, uint32_t index)
 	pthread_mutex_unlock(&data->queue_lock);
 	if (data->finish)
 		return ;
-	pthread_mutex_lock(&data->dongles[index]);
+	pthread_mutex_lock(&data->dongles[index].mutex);
 }

@@ -6,10 +6,11 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/22 14:29:40 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/22 14:31:41 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/22 19:54:49 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "codexion.h"
 
 static void	request_swap(t_request **a, t_request **b)

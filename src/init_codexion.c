@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:17:53 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/22 19:34:03 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/22 20:36:09 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@ static void	init_dongles(t_codexion *data)
 
 	i = 0;
 	while (i < data->args->coders_number)
-		pthread_mutex_init(data->dongles + (i++), NULL);
+	{
+		pthread_mutex_init(&data->dongles[i].mutex, NULL);
+		data->dongles[i].available_at = 0;
+		i++;
+	}
 }
 
 static void	init_coders(t_codexion *data)
@@ -75,7 +79,7 @@ static void	init_mutexes(t_codexion *data)
 bool	init_codexion(t_codexion *data)
 {
 	data->finish = 0;
-	data->dongles = malloc(sizeof(pthread_mutex_t) * data->args->coders_number);
+	data->dongles = malloc(sizeof(t_dongle) * data->args->coders_number);
 	if (!data->dongles)
 		return (false);
 	init_dongles(data);
