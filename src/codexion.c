@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:34 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/21 17:58:42 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/22 13:59:19 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,11 @@ static void	join_threads(t_codexion *data)
 		pthread_join(data->coders[i++].thread, NULL);
 }
 
-// get_cpu_ms() initializes static start time
 void	codexion(t_args *args)
 {
 	t_codexion		data;
 
 	data.args = args;
-	data.finish = 0;
 	if (!init_codexion(&data))
 		return ((void)fprintf(stderr, "Malloc failed.\n"));
 	get_cpu_ms();

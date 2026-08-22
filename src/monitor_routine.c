@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 15:53:23 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/21 17:52:56 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/22 13:56:15 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ static void	set_finish(t_codexion *data)
 static void	burnout(t_codexion *data, int number)
 {
 	pthread_mutex_lock(&data->print_lock);
+	set_finish(data);
 	printf("%d burned out\n", number);
 	pthread_mutex_unlock(&data->print_lock);
-	set_finish(data);
 }
 
 static void	finish(t_codexion *data)
 {
 	pthread_mutex_lock(&data->print_lock);
+	set_finish(data);
 	printf("Every coder compiled: %d times\n", data->args->compiles_required);
 	pthread_mutex_unlock(&data->print_lock);
-	set_finish(data);
 }
 
 void	*monitor_routine(void *arg)

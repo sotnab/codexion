@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/21 14:59:19 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/22 14:43:25 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,11 @@ uint32_t	get_cpu_ms(void);
 void		queue_add_request(t_codexion *data, t_request *request);
 
 void		queue_pop_request(t_codexion *data);
+
+void		queue_heapify_up(t_codexion *data);
+
+void		queue_heapify_down(t_codexion *data);
+
+void		dongle_request(t_codexion *data, t_coder *coder, uint32_t index);
 
 #endif

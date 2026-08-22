@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:16:07 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/21 15:20:09 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/22 14:41:59 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static void	print_coder_message(t_codexion *data, int number, t_message message)
 {
 	uint32_t	timestamp;
 
-	if (data->finish)
-		return ;
 	timestamp = get_cpu_ms();
 	pthread_mutex_lock(&data->print_lock);
+	if (data->finish)
+		return ((void)pthread_mutex_unlock(&data->print_lock));
 	if (message == DONGLE)
 		printf("%-6d %d has taken a dongle\n", timestamp, number);
 	if (message == COMPILING)
@@ -37,54 +37,13 @@ static void	print_coder_message(t_codexion *data, int number, t_message message)
 	pthread_mutex_unlock(&data->print_lock);
 }
 
-void	coder_sleep(t_codexion *data, uint32_t duration)
+static void	coder_sleep(t_codexion *data, uint32_t duration)
 {
 	uint32_t	finish;
 
 	finish = get_cpu_ms() + duration;
 	while (!data->finish && get_cpu_ms() < finish)
 		usleep(1000);
-}
-
-static bool	is_my_turn(t_codexion *data, t_coder *coder, uint32_t index)
-{
-	t_request	*first_request;
-	bool		my_turn;
-
-	if (data->queue.size == 0)
-		return (false);
-	first_request = data->queue.queue[0];
-	my_turn = first_request->number == coder->number
-		&& first_request->dongle_index == index;
-	if (my_turn)
-	{
-		queue_pop_request(data);
-		pthread_cond_broadcast(&data->queue.cond);
-	}
-	return (my_turn);
-}
-
-static bool	dongle_request(t_codexion *data, t_coder *coder, uint32_t index)
-{
-	t_request	*request;
-
-	request = malloc(sizeof(t_request));
-	if (!request)
-		return (false);
-	pthread_mutex_lock(&data->queue_lock);
-	request->number = coder->number;
-	request->dongle_index = index;
-	request->deadline = coder->last_compile + data->args->burnout_time;
-	queue_add_request(data, request);
-	pthread_cond_broadcast(&data->queue.cond);
-	while (!is_my_turn(data, coder, index) && !data->finish)
-		pthread_cond_wait(&data->queue.cond, &data->queue_lock);
-	pthread_mutex_unlock(&data->queue_lock);
-	if (data->finish)
-		return (false);
-	pthread_mutex_lock(&data->dongles[index]);
-	print_coder_message(data, coder->number, DONGLE);
-	return (true);
 }
 
 void	*coder_routine(void *arg)
@@ -96,13 +55,10 @@ void	*coder_routine(void *arg)
 	coder = (t_coder *)((void **)arg)[1];
 	while (!data->finish)
 	{
-		if (!dongle_request(data, coder, coder->first_dongle))
-			break ;
-		if (!dongle_request(data, coder, coder->second_dongle))
-		{
-			pthread_mutex_unlock(&data->dongles[coder->first_dongle]);
-			break ;
-		}
+		dongle_request(data, coder, coder->first_dongle);
+		print_coder_message(data, coder->number, DONGLE);
+		dongle_request(data, coder, coder->second_dongle);
+		print_coder_message(data, coder->number, DONGLE);
 		print_coder_message(data, coder->number, COMPILING);
 		coder->last_compile = get_cpu_ms();
 		coder_sleep(data, data->args->compile_time);

@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:17:53 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/21 14:59:48 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/22 13:59:57 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include <pthread.h>
 #include "codexion.h"
 
-// TODO init fail handling
 static bool	init_dongles(t_codexion *data)
 {
 	uint32_t	i;
@@ -28,7 +27,6 @@ static bool	init_dongles(t_codexion *data)
 	return (true);
 }
 
-// TODO init fail handling
 static void	init_coders(t_codexion *data)
 {
 	uint32_t	i;
@@ -68,7 +66,6 @@ static bool	init_queue(t_codexion *data)
 	return (true);
 }
 
-// TODO init fail handling
 static bool	init_mutexes(t_codexion *data)
 {
 	pthread_mutex_init(&data->print_lock, NULL);
@@ -79,6 +76,7 @@ static bool	init_mutexes(t_codexion *data)
 
 bool	init_codexion(t_codexion *data)
 {
+	data->finish = 0;
 	data->dongles = malloc(sizeof(pthread_mutex_t) * data->args->coders_number);
 	if (!data->dongles)
 		return (false);
