@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/22 14:40:22 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 18:23:40 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 19:55:32 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static t_request	*create_request(
 	return (request);
 }
 
+// TODO shitty code + data race
 static bool	is_my_turn(t_codexion *data, t_coder *coder, uint32_t index)
 {
 	t_request	*first;
@@ -36,7 +37,8 @@ static bool	is_my_turn(t_codexion *data, t_coder *coder, uint32_t index)
 		return (false);
 	first = data->queue.queue[0];
 	my_turn = first->number == coder->number
-		&& first->dongle_index == index;
+		&& first->dongle_index == index
+		&& data->dongles[index].available_at < get_cpu_ms();
 	if (my_turn)
 	{
 		queue_pop_request(data);
@@ -45,17 +47,21 @@ static bool	is_my_turn(t_codexion *data, t_coder *coder, uint32_t index)
 	return (my_turn);
 }
 
+// shitty code + data race
 bool	dongle_request(t_codexion *data, t_coder *coder, uint32_t index)
 {
 	t_request	*request;
+	t_timespec	available_at;
 
+	available_at = get_timespec_from_ms(data->dongles[index].available_at);
 	request = create_request(data, coder, index);
 	if (!request)
 		return (false);
 	pthread_mutex_lock(&data->queue_lock);
 	queue_add_request(data, request);
 	while (!is_my_turn(data, coder, index) && !data->finish)
-		pthread_cond_wait(&data->queue.cond, &data->queue_lock);
+		pthread_cond_timedwait(&data->queue.cond,
+			&data->queue_lock, &available_at);
 	pthread_mutex_unlock(&data->queue_lock);
 	return (true);
 }

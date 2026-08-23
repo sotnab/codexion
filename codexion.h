@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 18:30:54 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 20:07:57 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,59 +90,65 @@ typedef struct s_codexion
 	bool			finish;
 }	t_codexion;
 
-void		codexion(t_args *args);
-
-void		run_threads(t_codexion *data);
-
-void		join_threads(t_codexion *data);
-
-void		*coder_routine(void *arg);
-
-void		*monitor_routine(void *arg);
-
-void		cleanup_codexion(t_codexion *data);
-
-bool		init_codexion(t_codexion *data, t_args *args);
-
-void		burnout(t_codexion *data, int number);
-
-void		finish(t_codexion *data);
-
-bool		get_finish(t_codexion *data);
-
+// src/parsing/parse_arguments.c
 bool		parse_arguments(t_args *args, char **argv);
 
+// src/parsing/is_valid_uint.c
 bool		is_valid_uint(char *str);
 
-void		sleep_ms(t_codexion *data, uint32_t duration);
+// src/codexion.c
+void		codexion(t_args *args);
 
+// src/init/[...]_init.c
+bool		init_codexion(t_codexion *data, t_args *args);
+bool		init_dongles(t_codexion *data);
 void		destroy_dongle_mutexes(t_codexion *data, uint32_t n);
+bool		init_coders(t_codexion *data);
+bool		init_queue(t_codexion *data);
+bool		init_mutexes(t_codexion *data);
 
+// src/threads.c
+void		run_threads(t_codexion *data);
+void		join_threads(t_codexion *data);
+
+// src/coder/coder_routine.c
+void		*coder_routine(void *arg);
+
+// src/coder/coder_dongle.c
+bool		get_dongle(t_codexion *data, t_coder *coder, uint32_t index);
+void		put_down_dongle(t_codexion *data, uint32_t index);
+
+// src/coder/coder_request.c
+bool		dongle_request(t_codexion *data, t_coder *coder, uint32_t index);
+
+// src/coder/coder_message.c
 void		print_coder_message(t_codexion *data,
 				int number, t_message message);
 
-bool		get_dongle(t_codexion *data, t_coder *coder, uint32_t index);
+// src/monitor/monitor_routine.c
+void		*monitor_routine(void *arg);
 
-void		put_down_dongle(t_codexion *data, uint32_t index);
+// src/monitor/monitor_finish.c
+void		burnout(t_codexion *data, int number);
+void		finish(t_codexion *data);
 
-bool		init_dongles(t_codexion *data);
-
-bool		init_mutexes(t_codexion *data);
-
-bool		init_queue(t_codexion *data);
-
-bool		init_coders(t_codexion *data);
-
-uint32_t	get_cpu_ms(void);
-
+// src/queue/queue.c
 void		queue_add_request(t_codexion *data, t_request *request);
-
 void		queue_pop_request(t_codexion *data);
 
+// src/queue/queue_heapify.c
 void		queue_heapify_up(t_queue *queue);
-
 void		queue_heapify_down(t_queue *queue);
 
-bool		dongle_request(t_codexion *data, t_coder *coder, uint32_t index);
+// src/utils/get_cpu_ms.c
+uint32_t	get_cpu_ms(void);
+void		sleep_ms(t_codexion *data, uint32_t duration);
+t_timespec	get_timespec_from_ms(uint32_t ms);
+
+// src/utils/cleanup_codexion.c
+void		cleanup_codexion(t_codexion *data);
+
+// src/utils/get_finish.c
+bool		get_finish(t_codexion *data);
 
 #endif

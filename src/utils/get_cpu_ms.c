@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 16:04:56 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 18:11:30 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 19:48:55 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,23 @@ void	sleep_ms(t_codexion *data, uint32_t duration)
 		usleep(1000);
 }
 
+static t_timespec	get_cpu_time(void)
+{
+	t_timespec	time;
+
+	clock_gettime(CLOCK_REALTIME, &time);
+	return (time);
+}
+
+t_timespec	get_timespec_from_ms(uint32_t ms)
+{
+	t_timespec	time;
+
+	time.tv_sec = ms / 1000;
+	time.tv_nsec = ms * 1000;
+	return (time);
+}
+
 uint32_t	get_cpu_ms(void)
 {
 	static t_timespec	start = {-1, -1};
@@ -33,10 +50,10 @@ uint32_t	get_cpu_ms(void)
 
 	if (start.tv_sec == -1)
 	{
-		clock_gettime(CLOCK_MONOTONIC, &start);
+		start = get_cpu_time();
 		return (0);
 	}
-	clock_gettime(CLOCK_MONOTONIC, &time);
+	time = get_cpu_time();
 	time_delta = (time.tv_sec - start.tv_sec) * 1000;
 	time_delta += (time.tv_nsec - start.tv_nsec) / 1000000;
 	return (time_delta);
