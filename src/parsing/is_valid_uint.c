@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/18 00:05:34 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/19 15:32:31 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 10:31:05 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static bool	ft_isspace(char c)
 
 static bool	in_uint_range(char **str)
 {
-	uint32_t	result;
+	uint64_t	result;
 	uint8_t		current;
 
 	result = 0;
@@ -35,9 +35,9 @@ static bool	in_uint_range(char **str)
 	while (**str && ft_isdigit(**str))
 	{
 		current = **str - '0';
-		if (result != 0 && ((UINT32_MAX - current) / result) < 10)
-			return (false);
 		result = (result * 10) + current;
+		if (result > UINT32_MAX)
+			return (false);
 		(*str)++;
 	}
 	return (true);

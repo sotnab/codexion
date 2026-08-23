@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   codexion.c                                         :+:      :+:    :+:   */
+/*   init_mutexes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/15 18:04:34 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 13:43:37 by wbaran           ###   ########.fr       */
+/*   Created: 2026/08/23 13:34:24 by wbaran            #+#    #+#             */
+/*   Updated: 2026/08/23 13:34:59 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
+#include <stdbool.h>
 #include <pthread.h>
 #include "codexion.h"
 
-// Running get_cpu_ms to initialize static start time
-void	codexion(t_args *args)
+bool	init_mutexes(t_codexion *data)
 {
-	t_codexion		data;
-
-	if (!init_codexion(&data, args))
+	if (pthread_mutex_init(&data->print_lock, NULL) != 0)
+		return (false);
+	if (pthread_mutex_init(&data->finish_lock, NULL) != 0)
 	{
-		fprintf(stderr, "Codexion init failed.\n");
-		return ;
+		pthread_mutex_destroy(&data->print_lock);
+		return (false);
 	}
-	get_cpu_ms();
-	run_threads(&data);
-	join_threads(&data);
-	cleanup_codexion(&data);
+	if (pthread_mutex_init(&data->queue_lock, NULL) != 0)
+	{
+		pthread_mutex_destroy(&data->print_lock);
+		pthread_mutex_destroy(&data->finish_lock);
+		return (false);
+	}
+	return (true);
 }

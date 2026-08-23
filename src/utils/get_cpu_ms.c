@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_cpu_ms.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/18 20:31:48 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/19 16:56:12 by wbaran           ###   ########.fr       */
+/*   Created: 2026/08/19 16:04:56 by wbaran            #+#    #+#             */
+/*   Updated: 2026/08/23 13:56:06 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include <stdint.h>
+#include <time.h>
 #include <unistd.h>
 #include "codexion.h"
 
-int	main(int argc, char **argv)
+uint32_t	get_cpu_ms(void)
 {
-	t_args	args;
+	static t_timespec	start = {-1, -1};
+	t_timespec			time;
+	uint32_t			time_delta;
 
-	if (argc != 9)
-		return (fprintf(stderr, "Invalid number of arguments.\n"), 1);
-	if (parse_arguments(&args, argv))
-		codexion(&args);
-	else
-		return (printf("Invalid arguments.\n"), 1);
-	return (0);
+	if (start.tv_sec == -1)
+	{
+		clock_gettime(CLOCK_MONOTONIC, &start);
+		return (0);
+	}
+	clock_gettime(CLOCK_MONOTONIC, &time);
+	time_delta = (time.tv_sec - start.tv_sec) * 1000;
+	time_delta += (time.tv_nsec - start.tv_nsec) / 1e6;
+	return (time_delta);
 }

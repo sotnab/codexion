@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_cpu_ms.c                                       :+:      :+:    :+:   */
+/*   init_queue.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/19 16:04:56 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/20 21:23:24 by wbaran           ###   ########.fr       */
+/*   Created: 2026/08/23 12:51:02 by wbaran            #+#    #+#             */
+/*   Updated: 2026/08/23 13:41:43 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdint.h>
-#include <time.h>
-#include <unistd.h>
+#include <stdbool.h>
+#include <string.h>
+#include <pthread.h>
 #include "codexion.h"
 
-uint32_t	get_cpu_ms(void)
+bool	init_queue(t_codexion *data)
 {
-	static t_timespec	start = {-1, -1};
-	t_timespec			time;
-	uint32_t			time_delta;
+	t_queue		*queue;
+	uint32_t	size;
 
-	if (start.tv_sec == -1)
-	{
-		clock_gettime(CLOCK_MONOTONIC, &start);
-		return (0);
-	}
-	clock_gettime(CLOCK_MONOTONIC, &time);
-	time_delta = (time.tv_sec - start.tv_sec) * 1000;
-	time_delta += (time.tv_nsec - start.tv_nsec) / 1e6;
-	return (time_delta);
+	queue = &data->queue;
+	size = sizeof(t_request *) * data->args->coders_number;
+	queue->queue = malloc(size);
+	if (!queue->queue)
+		return (false);
+	memset(queue->queue, 0, size);
+	queue->scheduler = data->args->scheduler;
+	if (pthread_cond_init(&queue->cond, NULL) != 0)
+		return (free(queue->queue), false);
+	return (true);
 }

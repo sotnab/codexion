@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/22 20:12:50 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 13:35:16 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,17 +92,31 @@ typedef struct s_codexion
 
 void		codexion(t_args *args);
 
+void		run_threads(t_codexion *data);
+
+void		join_threads(t_codexion *data);
+
 void		*coder_routine(void *arg);
 
 void		*monitor_routine(void *arg);
 
 void		cleanup_codexion(t_codexion *data);
 
-bool		init_codexion(t_codexion *data);
+bool		init_codexion(t_codexion *data, t_args *args);
 
 bool		parse_arguments(t_args *args, char **argv);
 
 bool		is_valid_uint(char *str);
+
+void		destroy_dongle_mutexes(t_codexion *data, uint32_t n);
+
+bool		init_dongles(t_codexion *data);
+
+bool		init_mutexes(t_codexion *data);
+
+bool		init_queue(t_codexion *data);
+
+bool		init_coders(t_codexion *data);
 
 uint32_t	get_cpu_ms(void);
 

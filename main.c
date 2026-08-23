@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   codexion.c                                         :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/15 18:04:34 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 13:43:37 by wbaran           ###   ########.fr       */
+/*   Created: 2026/08/18 20:31:48 by wbaran            #+#    #+#             */
+/*   Updated: 2026/08/23 10:25:23 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <stdio.h>
-#include <stdint.h>
-#include <pthread.h>
+#include <unistd.h>
 #include "codexion.h"
 
-// Running get_cpu_ms to initialize static start time
-void	codexion(t_args *args)
+int	main(int argc, char **argv)
 {
-	t_codexion		data;
+	t_args	args;
 
-	if (!init_codexion(&data, args))
-	{
-		fprintf(stderr, "Codexion init failed.\n");
-		return ;
-	}
-	get_cpu_ms();
-	run_threads(&data);
-	join_threads(&data);
-	cleanup_codexion(&data);
+	if (argc != 9)
+		return (fprintf(stderr, "Invalid number of arguments.\n"), 1);
+	if (!parse_arguments(&args, argv))
+		return (fprintf(stderr, "Invalid arguments.\n"), 1);
+	codexion(&args);
+	return (0);
 }

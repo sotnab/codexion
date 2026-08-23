@@ -25,18 +25,23 @@ CFLAGS		:=	-Wall -Werror -Wextra -I. -pthread -g
 HEADERS 	:=	codexion.h
 
 SRCS_PATH	:=	./src
-SRCS		:=	$(SRCS_PATH)/main.c \
+SRCS		:=	main.c \
 				$(SRCS_PATH)/codexion.c \
-				$(SRCS_PATH)/coder_routine.c \
-				$(SRCS_PATH)/coder_request.c \
-				$(SRCS_PATH)/monitor_routine.c \
-				$(SRCS_PATH)/cleanup_codexion.c \
-				$(SRCS_PATH)/get_cpu_ms.c \
-				$(SRCS_PATH)/init_codexion.c \
-				$(SRCS_PATH)/parse_arguments.c \
-				$(SRCS_PATH)/is_valid_uint.c \
-				$(SRCS_PATH)/queue.c \
-				$(SRCS_PATH)/queue_heapify.c
+				$(SRCS_PATH)/threads.c \
+				$(SRCS_PATH)/parsing/is_valid_uint.c \
+				$(SRCS_PATH)/parsing/parse_arguments.c \
+				$(SRCS_PATH)/init/init_codexion.c \
+				$(SRCS_PATH)/init/init_coders.c \
+				$(SRCS_PATH)/init/init_dongles.c \
+				$(SRCS_PATH)/init/init_queue.c \
+				$(SRCS_PATH)/init/init_mutexes.c \
+				$(SRCS_PATH)/coder/coder_request.c \
+				$(SRCS_PATH)/coder/coder_routine.c \
+				$(SRCS_PATH)/monitor/monitor_routine.c \
+				$(SRCS_PATH)/queue/queue.c \
+				$(SRCS_PATH)/queue/queue_heapify.c \
+				$(SRCS_PATH)/utils/get_cpu_ms.c \
+				$(SRCS_PATH)/utils/cleanup_codexion.c
 
 # Object files
 OBJS		:=	$(SRCS:.c=.o)
