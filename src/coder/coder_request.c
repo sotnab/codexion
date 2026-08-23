@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/22 14:40:22 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 21:31:34 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 22:12:41 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,15 @@ static t_request	*create_request(
 
 static uint32_t	get_available_at(t_codexion *data, uint32_t index)
 {
-	t_dongle	*dongle;
 	uint32_t	result;
 
-	dongle = data->dongles + index;
-	pthread_mutex_lock(&dongle->data_lock);
-	result = dongle->available_at;
-	pthread_mutex_unlock(&dongle->data_lock);
+	pthread_mutex_lock(&data->data_lock);
+	result = data->dongles[index].available_at;
+	pthread_mutex_unlock(&data->data_lock);
 	return (result);
 }
 
-// TODO shitty code * 2
+// TODO shitty code
 static bool	is_my_turn(t_codexion *data, t_coder *coder, uint32_t index)
 {
 	t_request	*first;
@@ -61,7 +59,7 @@ static bool	is_my_turn(t_codexion *data, t_coder *coder, uint32_t index)
 	return (my_turn);
 }
 
-// shitty code
+// TODO shitty code
 bool	dongle_request(t_codexion *data, t_coder *coder, uint32_t index)
 {
 	t_request	*request;

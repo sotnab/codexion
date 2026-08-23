@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 21:23:24 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 22:13:20 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ typedef struct s_queue
 typedef struct s_dongle
 {
 	pthread_mutex_t	lock;
-	pthread_mutex_t	data_lock;
 	uint32_t		available_at;
 }	t_dongle;
 
@@ -87,6 +86,7 @@ typedef struct s_codexion
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	finish_lock;
 	pthread_mutex_t	queue_lock;
+	pthread_mutex_t	data_lock;
 	pthread_t		monitor;
 	bool			finish;
 }	t_codexion;
@@ -103,7 +103,7 @@ void		codexion(t_args *args);
 // src/init/[...]_init.c
 bool		init_codexion(t_codexion *data, t_args *args);
 bool		init_dongles(t_codexion *data);
-void		destroy_dongle_mutexes(t_codexion *data, uint32_t n1, uint32_t n2);
+void		destroy_dongle_mutexes(t_codexion *data, uint32_t n);
 bool		init_coders(t_codexion *data);
 bool		init_queue(t_codexion *data);
 bool		init_mutexes(t_codexion *data);

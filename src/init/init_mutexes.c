@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 13:34:24 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 13:34:59 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 22:10:03 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ bool	init_mutexes(t_codexion *data)
 	{
 		pthread_mutex_destroy(&data->print_lock);
 		pthread_mutex_destroy(&data->finish_lock);
+		return (false);
+	}
+	if (pthread_mutex_init(&data->data_lock, NULL) != 0)
+	{
+		pthread_mutex_destroy(&data->print_lock);
+		pthread_mutex_destroy(&data->finish_lock);
+		pthread_mutex_destroy(&data->queue_lock);
 		return (false);
 	}
 	return (true);

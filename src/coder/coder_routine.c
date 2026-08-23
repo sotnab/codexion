@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:16:07 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 21:30:42 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 22:31:15 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,19 @@ static void	put_down_dongle(t_codexion *data, uint32_t index)
 	t_dongle	*dongle;
 
 	dongle = data->dongles + index;
+	pthread_mutex_lock(&data->data_lock);
 	dongle->available_at = get_cpu_ms() + data->args->dongle_cooldown;
+	pthread_mutex_unlock(&data->data_lock);
 	pthread_mutex_unlock(&dongle->lock);
 }
 
 static void	coder_compile(t_codexion *data, t_coder *coder)
 {
 	print_coder_message(data, coder->number, COMPILING);
+	pthread_mutex_lock(&data->data_lock);
 	coder->last_compile = get_cpu_ms();
+	coder->compiles++;
+	pthread_mutex_unlock(&data->data_lock);
 	sleep_ms(data, data->args->compile_time);
 }
 
@@ -69,7 +74,6 @@ void	*coder_routine(void *arg)
 		coder_compile(data, coder);
 		put_down_dongle(data, coder->second_dongle);
 		put_down_dongle(data, coder->first_dongle);
-		coder->compiles++;
 		coder_debug_refactor(data, coder);
 	}
 	return (free(arg), NULL);
