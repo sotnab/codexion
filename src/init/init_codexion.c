@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:17:53 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 18:19:22 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 21:21:16 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@
 
 static void	first_cleanup(t_codexion *data)
 {
-	destroy_dongle_mutexes(data, data->args->coders_number);
+	uint32_t	length;
+
+	length = data->args->coders_number;
+	destroy_dongle_mutexes(data, length, length);
 	free(data->dongles);
 }
 
