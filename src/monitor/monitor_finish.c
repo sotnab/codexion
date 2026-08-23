@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   monitor_exit.c                                     :+:      :+:    :+:   */
+/*   monitor_finish.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 15:40:03 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 15:40:55 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 18:33:10 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@ static void	set_finish(t_codexion *data)
 
 void	burnout(t_codexion *data, int number)
 {
-	pthread_mutex_lock(&data->print_lock);
 	set_finish(data);
+	pthread_mutex_lock(&data->print_lock);
 	printf("%d burned out\n", number);
 	pthread_mutex_unlock(&data->print_lock);
 }
 
 void	finish(t_codexion *data)
 {
-	pthread_mutex_lock(&data->print_lock);
 	set_finish(data);
+	pthread_mutex_lock(&data->print_lock);
 	printf("Every coder compiled: %d times\n", data->args->compiles_required);
 	pthread_mutex_unlock(&data->print_lock);
 }

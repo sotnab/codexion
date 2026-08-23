@@ -44,6 +44,7 @@ SRCS		:=	main.c \
 				$(SRCS_PATH)/queue/queue.c \
 				$(SRCS_PATH)/queue/queue_heapify.c \
 				$(SRCS_PATH)/utils/get_cpu_ms.c \
+				$(SRCS_PATH)/utils/get_finish.c \
 				$(SRCS_PATH)/utils/cleanup_codexion.c
 
 # Object files

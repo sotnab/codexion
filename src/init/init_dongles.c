@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 12:48:31 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 16:22:59 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 18:02:09 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ bool	init_dongles(t_codexion *data)
 		return (false);
 	memset(data->dongles, 0, size);
 	if (!init_dongle_mutexes(data))
-		return (false);
+		return (free(data->dongles), false);
 	return (true);
 }

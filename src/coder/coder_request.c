@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/22 14:40:22 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 14:53:39 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 18:23:40 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,17 @@ static bool	is_my_turn(t_codexion *data, t_coder *coder, uint32_t index)
 	return (my_turn);
 }
 
-void	dongle_request(t_codexion *data, t_coder *coder, uint32_t index)
+bool	dongle_request(t_codexion *data, t_coder *coder, uint32_t index)
 {
 	t_request	*request;
 
 	request = create_request(data, coder, index);
 	if (!request)
-		return ;
+		return (false);
 	pthread_mutex_lock(&data->queue_lock);
 	queue_add_request(data, request);
 	while (!is_my_turn(data, coder, index) && !data->finish)
 		pthread_cond_wait(&data->queue.cond, &data->queue_lock);
 	pthread_mutex_unlock(&data->queue_lock);
+	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 15:53:23 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 15:41:53 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 18:41:30 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static bool	is_burnout(t_codexion *data)
 	time = get_cpu_ms();
 	while (i < data->args->coders_number)
 	{
+		// TODO data race
 		if (data->coders[i].last_compile + data->args->burnout_time < time)
 			return (burnout(data, i + 1), true);
 		i++;
@@ -40,6 +41,7 @@ static bool	is_finished(t_codexion *data)
 	i = 0;
 	while (i < data->args->coders_number)
 	{
+		// TODO data race
 		if (data->coders[i].compiles < data->args->compiles_required)
 			return (false);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:17:53 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 13:40:13 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 18:19:22 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	second_cleanup(t_codexion *data)
 static void	third_cleanup(t_codexion *data)
 {
 	second_cleanup(data);
-	pthread_cond_init(&data->queue.cond, NULL);
+	pthread_cond_destroy(&data->queue.cond);
 	free(data->queue.queue);
 }
 

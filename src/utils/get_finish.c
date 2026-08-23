@@ -1,35 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_queue.c                                       :+:      :+:    :+:   */
+/*   get_finish.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/23 12:51:02 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 18:03:19 by wbaran           ###   ########.fr       */
+/*   Created: 2026/08/23 18:11:41 by wbaran            #+#    #+#             */
+/*   Updated: 2026/08/23 18:19:48 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdint.h>
 #include <stdbool.h>
-#include <string.h>
 #include <pthread.h>
 #include "codexion.h"
 
-bool	init_queue(t_codexion *data)
+bool	get_finish(t_codexion *data)
 {
-	t_queue		*queue;
-	uint32_t	size;
+	bool	finish;
 
-	queue = &data->queue;
-	size = sizeof(t_request *) * data->args->coders_number * 2;
-	queue->queue = malloc(size);
-	if (!queue->queue)
-		return (false);
-	memset(queue->queue, 0, size);
-	queue->scheduler = data->args->scheduler;
-	if (pthread_cond_init(&queue->cond, NULL) != 0)
-		return (free(queue->queue), false);
-	return (true);
+	pthread_mutex_lock(&data->finish_lock);
+	finish = data->finish;
+	pthread_mutex_unlock(&data->finish_lock);
+	return (finish);
 }

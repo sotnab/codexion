@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 16:13:58 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 18:30:54 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ void		burnout(t_codexion *data, int number);
 
 void		finish(t_codexion *data);
 
+bool		get_finish(t_codexion *data);
+
 bool		parse_arguments(t_args *args, char **argv);
 
 bool		is_valid_uint(char *str);
@@ -119,7 +121,7 @@ void		destroy_dongle_mutexes(t_codexion *data, uint32_t n);
 void		print_coder_message(t_codexion *data,
 				int number, t_message message);
 
-void		get_dongle(t_codexion *data, t_coder *coder, uint32_t index);
+bool		get_dongle(t_codexion *data, t_coder *coder, uint32_t index);
 
 void		put_down_dongle(t_codexion *data, uint32_t index);
 
@@ -141,6 +143,6 @@ void		queue_heapify_up(t_queue *queue);
 
 void		queue_heapify_down(t_queue *queue);
 
-void		dongle_request(t_codexion *data, t_coder *coder, uint32_t index);
+bool		dongle_request(t_codexion *data, t_coder *coder, uint32_t index);
 
 #endif

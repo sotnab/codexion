@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 14:10:09 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 14:11:50 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 18:15:53 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	print_coder_message(t_codexion *data, int number, t_message message)
 
 	timestamp = get_cpu_ms();
 	pthread_mutex_lock(&data->print_lock);
-	if (data->finish)
+	if (get_finish(data))
 		return ((void)pthread_mutex_unlock(&data->print_lock));
 	if (message == DONGLE)
 		printf("%-6d %d has taken a dongle\n", timestamp, number);
