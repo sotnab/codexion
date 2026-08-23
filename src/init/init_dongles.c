@@ -6,13 +6,15 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 12:48:31 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 13:06:22 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 16:22:59 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <string.h>
 #include "codexion.h"
 
 void	destroy_dongle_mutexes(t_codexion *data, uint32_t n)
@@ -40,9 +42,13 @@ static bool	init_dongle_mutexes(t_codexion *data)
 
 bool	init_dongles(t_codexion *data)
 {
-	data->dongles = malloc(sizeof(t_dongle) * data->args->coders_number);
+	uint32_t	size;
+
+	size = sizeof(t_dongle) * data->args->coders_number;
+	data->dongles = malloc(size);
 	if (!data->dongles)
 		return (false);
+	memset(data->dongles, 0, size);
 	if (!init_dongle_mutexes(data))
 		return (false);
 	return (true);
