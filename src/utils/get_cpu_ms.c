@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 16:04:56 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 13:56:06 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 14:17:11 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 #include <time.h>
 #include <unistd.h>
 #include "codexion.h"
+
+void	sleep_ms(t_codexion *data, uint32_t duration)
+{
+	uint32_t	finish;
+
+	finish = get_cpu_ms() + duration;
+	while (!data->finish && get_cpu_ms() < finish)
+		usleep(1000);
+}
 
 uint32_t	get_cpu_ms(void)
 {

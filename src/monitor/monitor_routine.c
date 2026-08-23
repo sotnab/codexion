@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 15:53:23 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/22 13:56:15 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 15:41:53 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,55 +17,42 @@
 #include <pthread.h>
 #include "codexion.h"
 
-static void	set_finish(t_codexion *data)
+static bool	is_burnout(t_codexion *data)
 {
-	pthread_mutex_lock(&data->finish_lock);
-	data->finish = true;
-	pthread_mutex_unlock(&data->finish_lock);
-	pthread_cond_broadcast(&data->queue.cond);
+	uint32_t	i;
+	uint32_t	time;
+
+	i = 0;
+	time = get_cpu_ms();
+	while (i < data->args->coders_number)
+	{
+		if (data->coders[i].last_compile + data->args->burnout_time < time)
+			return (burnout(data, i + 1), true);
+		i++;
+	}
+	return (false);
 }
 
-static void	burnout(t_codexion *data, int number)
+static bool	is_finished(t_codexion *data)
 {
-	pthread_mutex_lock(&data->print_lock);
-	set_finish(data);
-	printf("%d burned out\n", number);
-	pthread_mutex_unlock(&data->print_lock);
-}
+	uint32_t	i;
 
-static void	finish(t_codexion *data)
-{
-	pthread_mutex_lock(&data->print_lock);
-	set_finish(data);
-	printf("Every coder compiled: %d times\n", data->args->compiles_required);
-	pthread_mutex_unlock(&data->print_lock);
+	i = 0;
+	while (i < data->args->coders_number)
+	{
+		if (data->coders[i].compiles < data->args->compiles_required)
+			return (false);
+		i++;
+	}
+	return (finish(data), true);
 }
 
 void	*monitor_routine(void *arg)
 {
 	t_codexion	*data;
-	t_coder		*coder;
-	bool		finished;
-	uint32_t	time;
-	uint32_t	i;
 
 	data = (t_codexion *)arg;
-	while (true)
-	{
-		i = 0;
-		time = get_cpu_ms();
-		finished = true;
-		while (i < data->args->coders_number)
-		{
-			coder = data->coders + (i++);
-			if (time - coder->last_compile > data->args->burnout_time)
-				return (burnout(data, coder->number), NULL);
-			if (coder->compiles < data->args->compiles_required)
-				finished = false;
-		}
-		if (finished)
-			return (finish(data), NULL);
+	while (!is_burnout(data) && !is_finished(data))
 		usleep(5000);
-	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 13:35:16 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/23 15:41:15 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,24 @@ void		cleanup_codexion(t_codexion *data);
 
 bool		init_codexion(t_codexion *data, t_args *args);
 
+void		burnout(t_codexion *data, int number);
+
+void		finish(t_codexion *data);
+
 bool		parse_arguments(t_args *args, char **argv);
 
 bool		is_valid_uint(char *str);
 
+void		sleep_ms(t_codexion *data, uint32_t duration);
+
 void		destroy_dongle_mutexes(t_codexion *data, uint32_t n);
+
+void		print_coder_message(t_codexion *data,
+				int number, t_message message);
+
+void		get_dongle(t_codexion *data, t_coder *coder, uint32_t index);
+
+void		put_down_dongle(t_codexion *data, uint32_t index);
 
 bool		init_dongles(t_codexion *data);
 
