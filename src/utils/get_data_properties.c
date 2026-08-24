@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 18:11:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/24 15:41:57 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/24 19:38:38 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ bool	get_compiles_finished(t_codexion *data, t_coder *coder)
 	bool	result;
 
 	pthread_mutex_lock(&data->data_lock);
-	if (coder->compiles >= data->args->compiles_required)
-		result = true;
-	else
-		result = false;
+	result = coder->compiles >= data->args->compiles_required;
 	pthread_mutex_unlock(&data->data_lock);
 	return (result);
 }

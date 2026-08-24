@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/24 15:42:16 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/24 19:36:54 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,11 @@ void		*coder_routine(void *arg);
 // src/coder/coder_request.c
 bool		dongle_request(t_codexion *data, t_coder *coder, uint32_t index);
 
-// src/coder/coder_message.c
-void		print_coder_message(t_codexion *data,
-				int number, t_message message);
+// src/coder/coder_utils.c
+void		print_coder_message(
+				t_codexion *data, int number, t_message message);
+t_request	*create_request(
+				t_codexion *data, t_coder *coder, uint32_t index);
 
 // src/monitor/monitor_routine.c
 void		*monitor_routine(void *arg);

@@ -1,15 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   coder_message.c                                    :+:      :+:    :+:   */
+/*   coder_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/23 14:10:09 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 18:15:53 by wbaran           ###   ########.fr       */
+/*   Created: 2026/08/24 19:34:36 by wbaran            #+#    #+#             */
+/*   Updated: 2026/08/24 19:35:53 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <pthread.h>
@@ -32,4 +33,18 @@ void	print_coder_message(t_codexion *data, int number, t_message message)
 	if (message == REFACTORING)
 		printf("%-6d %d is refactoring\n", timestamp, number);
 	pthread_mutex_unlock(&data->print_lock);
+}
+
+t_request	*create_request(
+	t_codexion *data, t_coder *coder, uint32_t index)
+{
+	t_request	*request;
+
+	request = malloc(sizeof(t_request));
+	if (!request)
+		return (NULL);
+	request->number = coder->number;
+	request->dongle_index = index;
+	request->deadline = coder->last_compile + data->args->burnout_time;
+	return (request);
 }

@@ -37,7 +37,7 @@ SRCS		:=	main.c \
 				$(SRCS_PATH)/init/init_mutexes.c \
 				$(SRCS_PATH)/coder/coder_request.c \
 				$(SRCS_PATH)/coder/coder_routine.c \
-				$(SRCS_PATH)/coder/coder_message.c \
+				$(SRCS_PATH)/coder/coder_utils.c \
 				$(SRCS_PATH)/monitor/monitor_routine.c \
 				$(SRCS_PATH)/monitor/monitor_finish.c \
 				$(SRCS_PATH)/queue/queue.c \

@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/22 14:40:22 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/24 15:41:50 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/24 19:35:22 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,6 @@
 #include <stdint.h>
 #include <pthread.h>
 #include "codexion.h"
-
-static t_request	*create_request(
-	t_codexion *data, t_coder *coder, uint32_t index)
-{
-	t_request	*request;
-
-	request = malloc(sizeof(t_request));
-	if (!request)
-		return (NULL);
-	request->number = coder->number;
-	request->dongle_index = index;
-	request->deadline = coder->last_compile + data->args->burnout_time;
-	return (request);
-}
 
 // TODO shitty code
 static bool	is_my_turn(t_codexion *data, t_coder *coder, uint32_t index)
