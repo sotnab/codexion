@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/23 15:40:03 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 18:33:10 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/24 14:59:02 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@
 
 static void	set_finish(t_codexion *data)
 {
-	pthread_mutex_lock(&data->finish_lock);
 	data->finish = true;
-	pthread_mutex_unlock(&data->finish_lock);
 	pthread_cond_broadcast(&data->queue.cond);
 }
 

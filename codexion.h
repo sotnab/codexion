@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/15 18:04:41 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 22:13:20 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/24 15:42:16 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ typedef struct s_codexion
 	t_queue			queue;
 	t_dongle		*dongles;
 	pthread_mutex_t	print_lock;
-	pthread_mutex_t	finish_lock;
 	pthread_mutex_t	queue_lock;
 	pthread_mutex_t	data_lock;
 	pthread_t		monitor;
@@ -145,7 +144,9 @@ t_timespec	get_timespec_from_ms(uint32_t ms);
 // src/utils/cleanup_codexion.c
 void		cleanup_codexion(t_codexion *data);
 
-// src/utils/get_finish.c
+// src/utils/get_data_properties.c
 bool		get_finish(t_codexion *data);
+bool		get_compiles_finished(t_codexion *data, t_coder *coder);
+uint32_t	get_available_at(t_codexion *data, uint32_t index);
 
 #endif

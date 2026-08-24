@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 14:16:07 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 22:31:15 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/24 14:57:32 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	*coder_routine(void *arg)
 		return (NULL);
 	data = (t_codexion *)((void **)arg)[0];
 	coder = (t_coder *)((void **)arg)[1];
-	while (!get_finish(data))
+	while (!get_finish(data) && !get_compiles_finished(data, coder))
 	{
 		if (!get_dongle(data, coder, coder->first_dongle))
 			break ;

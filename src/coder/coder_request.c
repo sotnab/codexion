@@ -6,7 +6,7 @@
 /*   By: wbaran <wbaran@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/22 14:40:22 by wbaran            #+#    #+#             */
-/*   Updated: 2026/08/23 22:12:41 by wbaran           ###   ########.fr       */
+/*   Updated: 2026/08/24 15:41:50 by wbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,6 @@ static t_request	*create_request(
 	request->dongle_index = index;
 	request->deadline = coder->last_compile + data->args->burnout_time;
 	return (request);
-}
-
-static uint32_t	get_available_at(t_codexion *data, uint32_t index)
-{
-	uint32_t	result;
-
-	pthread_mutex_lock(&data->data_lock);
-	result = data->dongles[index].available_at;
-	pthread_mutex_unlock(&data->data_lock);
-	return (result);
 }
 
 // TODO shitty code
